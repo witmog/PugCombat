@@ -2,6 +2,27 @@
 #include <Windows.h>
 static bool running;
 
+LRESULT WINAPI
+WindowProc(HWND   window,
+	   UINT   msg,
+	   WPARAM wparam,
+	   LPARAM lparam)
+{
+	LRESULT result = 0;
+	switch (msg)
+	{
+		case WM_CLOSE:
+		{
+			running = false;
+		} break;
+		default:
+		{
+			result = DefWindowProc(window, msg, wparam, lparam);
+		}
+	}
+	return result;
+}
+
 int WINAPI
 WinMain(HINSTANCE instance,
         HINSTANCE prev_instance,
@@ -11,7 +32,7 @@ WinMain(HINSTANCE instance,
 	WNDCLASSEX wc = {0};	
 	wc.cbSize = sizeof(WNDCLASSEX); 
 	wc.style = CS_HREDRAW | CS_VREDRAW;
-	wc.lpfnWndProc = DefWindowProc;
+	wc.lpfnWndProc = WindowProc;
 	wc.hInstance = instance;
 	wc.lpszClassName = "PugCombat";
 
