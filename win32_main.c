@@ -14,5 +14,21 @@ WinMain(HINSTANCE instance,
 	wc.lpszClassName = "PugCombat";
 
 	RegisterClassEx(&wc);
+	
+	HWND window = CreateWindowEx(WS_EX_OVERLAPPEDWINDOW,
+				     wc.lpszClassName,
+				     "Pug Combat",
+				     WS_OVERLAPPEDWINDOW | WS_SIZEBOX,
+				     0, 0,
+				     800, 600,
+				     NULL, NULL, 
+				     instance,
+				     NULL);
+	if (!window)
+	{
+		return 1;
+	}
+	ShowWindow(window, show_cmd);
+	
 
 }
