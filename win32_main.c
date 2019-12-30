@@ -3,7 +3,7 @@
 static bool running;
 
 LRESULT WINAPI
-WindowProc(HWND   window,
+win32_window_proc(HWND   window,
 	   UINT   msg,
 	   WPARAM wparam,
 	   LPARAM lparam)
@@ -23,6 +23,7 @@ WindowProc(HWND   window,
 	return result;
 }
 
+
 int WINAPI
 WinMain(HINSTANCE instance,
         HINSTANCE prev_instance,
@@ -32,7 +33,7 @@ WinMain(HINSTANCE instance,
 	WNDCLASSEX wc = {0};	
 	wc.cbSize = sizeof(WNDCLASSEX); 
 	wc.style = CS_HREDRAW | CS_VREDRAW;
-	wc.lpfnWndProc = WindowProc;
+	wc.lpfnWndProc = win32_window_proc;
 	wc.hInstance = instance;
 	wc.lpszClassName = "PugCombat";
 
