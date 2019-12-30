@@ -1,4 +1,6 @@
+#include <stdbool.h>
 #include <Windows.h>
+static bool running;
 
 int WINAPI
 WinMain(HINSTANCE instance,
@@ -29,6 +31,22 @@ WinMain(HINSTANCE instance,
 		return 1;
 	}
 	ShowWindow(window, show_cmd);
+
+	running = true;
+	while (running)
+	{
+		MSG msg = {0};
+		while (PeekMessage(&msg, 0, 0, 0, PM_REMOVE))
+		{
+			if (msg.message == WM_QUIT)
+			{
+				running = false;
+			}
+			TranslateMessage(&msg);
+			DispatchMessage(&msg);
+		}
+	}
+	return 0;
 	
 
 }
