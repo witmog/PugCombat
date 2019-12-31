@@ -16,7 +16,7 @@ typedef struct
 static BitmapBuffer global_buffer;
 
 void
-platform_draw_rectangle(int x, int y, int width, int height, Color color)
+platform_fill_rectangle(int x, int y, int width, int height, Color color)
 {
 	for (int j = y; j < height+y; ++j)
 	{
@@ -149,8 +149,8 @@ WinMain(HINSTANCE instance,
 		}
 
 		HDC device_context = GetDC(window);
-		platform_draw_rectangle(400, 300, 80, 50, RGB32(20, 144, 82));
-		platform_draw_rectangle(0, 0, 239, 399, RGB32(20, 82, 144));
+		platform_fill_rectangle(400, 300, 80, 50, RGB32(20, 144, 82));
+		platform_fill_rectangle(0, 0, 239, 399, RGB32(20, 82, 144));
 		RECT client_rect;
 		GetClientRect(window, &client_rect);
 		win32_display_buffer(device_context, &global_buffer, client_rect.right, client_rect.bottom);	
