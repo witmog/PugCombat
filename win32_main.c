@@ -1,6 +1,8 @@
 #include <stdbool.h>
 #include <Windows.h>
 static bool running;
+typedef int Color;
+#define RGB32(r, g, b) ((Color)((r << 16) | (g << 8) | b))
 
 typedef struct 
 {
@@ -12,6 +14,21 @@ typedef struct
 } BitmapBuffer;
 
 static BitmapBuffer global_buffer;
+
+void
+platform_draw_rectangle(int x, int y, int width, int height, Color color)
+{
+	for (int j = 0; j < global_buffer.height; ++j)
+	{
+		for (int i = 0; i < global_buffer.width; ++i)
+		{
+			if ((i > x && i < x+width) && (j > y && j < y+height)) 
+			{
+				((int *)global_buffer.data)[global_buffer.width*j+i] = color;	
+			}
+		}
+	}	
+}
 
 static void
 win32_display_buffer(HDC device_context,
@@ -130,23 +147,9 @@ WinMain(HINSTANCE instance,
 			TranslateMessage(&msg);
 			DispatchMessage(&msg);
 		}
+
 		HDC device_context = GetDC(window);
-
-		{
-			unsigned char *row = (unsigned char *)global_buffer.data;
-			for (int y = 0; y < global_buffer.height; ++y)
-			{
-					
-				int *pixel = (int *)row; 
-				for (int x = 0; x < global_buffer.width; ++x)
-				{
-					
-					*pixel++ = (255 << 16) | (255 << 8) | (0);
-				}
-				row += global_buffer.stride;
-			}
-		}
-
+		platform_draw_rectangle(400, 300, 80, 50, RGB32(20, 144, 82));
 		RECT client_rect;
 		GetClientRect(window, &client_rect);
 		win32_display_buffer(device_context, &global_buffer, client_rect.right, client_rect.bottom);	

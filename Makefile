@@ -1,9 +1,9 @@
 CC=gcc
 CFLAGS=-I.
-LIBS=-luser32
+LIBS=-luser32 -lGdi32 -lKernel32
 
 win32_main.obj: win32_main.c
-	$(CC) -o PugCombat win32_main.c $(CFLAGS) $(LIBS)
+	$(CC) -g -o PugCombat win32_main.c $(CFLAGS) $(LIBS)
 
 .PHONY: clean
 
