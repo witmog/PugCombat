@@ -18,11 +18,11 @@ static BitmapBuffer global_buffer;
 void
 platform_draw_rectangle(int x, int y, int width, int height, Color color)
 {
-	for (int j = 0; j < global_buffer.height; ++j)
+	for (int j = y; j < height+y; ++j)
 	{
-		for (int i = 0; i < global_buffer.width; ++i)
+		for (int i = x; i < width+x; ++i)
 		{
-			if ((i > x && i < x+width) && (j > y && j < y+height)) 
+			if ((i > 0 && i < global_buffer.width) && (j > 0 && j < global_buffer.height)) 
 			{
 				((int *)global_buffer.data)[global_buffer.width*j+i] = color;	
 			}
@@ -150,6 +150,7 @@ WinMain(HINSTANCE instance,
 
 		HDC device_context = GetDC(window);
 		platform_draw_rectangle(400, 300, 80, 50, RGB32(20, 144, 82));
+		platform_draw_rectangle(0, 0, 239, 399, RGB32(20, 82, 144));
 		RECT client_rect;
 		GetClientRect(window, &client_rect);
 		win32_display_buffer(device_context, &global_buffer, client_rect.right, client_rect.bottom);	
