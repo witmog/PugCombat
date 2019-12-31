@@ -71,6 +71,12 @@ win32_window_proc(HWND   window,
 		{
 			running = false;
 		} break;
+		case WM_SIZE:
+		{
+			int width = LOWORD(lparam);
+			int height = HIWORD(lparam);
+			win32_resize_buffer(&global_buffer, width, height);	
+		} break;
 		default:
 		{
 			result = DefWindowProc(window, msg, wparam, lparam);
@@ -141,7 +147,9 @@ WinMain(HINSTANCE instance,
 			}
 		}
 
-		win32_display_buffer(device_context, &global_buffer, 800, 600);	
+		RECT client_rect;
+		GetClientRect(window, &client_rect);
+		win32_display_buffer(device_context, &global_buffer, client_rect.right, client_rect.bottom);	
 		ReleaseDC(window, device_context);
 	}
 	return 0;
