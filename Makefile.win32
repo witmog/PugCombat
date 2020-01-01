@@ -1,0 +1,14 @@
+CC=gcc
+CFLAGS=-I.
+LIBS=-luser32 -lGdi32 -lKernel32
+DEPS= game.h
+
+%.o: %.c $(DEPS)
+	$(CC) -c -o $@ $< $(CFLAGS)
+
+all: win32_main.o game.o
+	$(CC) -o PugCombat win32_main.o game.o $(CFLAGS) $(LIBS)
+
+clean:
+	DEL /Q *.o *.exe
+

@@ -1,11 +1,9 @@
-CC=gcc
-CFLAGS=-I.
-LIBS=-luser32 -lGdi32 -lKernel32
+all: win
 
-win32_main.obj: win32_main.c
-	$(CC) -g -o PugCombat win32_main.c $(CFLAGS) $(LIBS)
+win:
+	+$(MAKE) -f Makefile.win32
+
 
 .PHONY: clean
-
 clean:
-	DEL /Q *.obj *.exe
+	+$(MAKE) clean -f Makefile.win32
