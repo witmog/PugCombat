@@ -1,8 +1,7 @@
+#include <game.h>
 #include <stdbool.h>
 #include <Windows.h>
 static bool running;
-typedef int Color;
-#define RGB32(r, g, b) ((Color)((r << 16) | (g << 8) | b))
 
 typedef struct 
 {
@@ -148,9 +147,9 @@ WinMain(HINSTANCE instance,
 			DispatchMessage(&msg);
 		}
 
+		game_loop();
+
 		HDC device_context = GetDC(window);
-		platform_fill_rectangle(400, 300, 80, 50, RGB32(20, 144, 82));
-		platform_fill_rectangle(0, 0, 239, 399, RGB32(20, 82, 144));
 		RECT client_rect;
 		GetClientRect(window, &client_rect);
 		win32_display_buffer(device_context, &global_buffer, client_rect.right, client_rect.bottom);	
