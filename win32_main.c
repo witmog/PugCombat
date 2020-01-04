@@ -68,7 +68,7 @@ win32_resize_buffer(BitmapBuffer *buffer, int width, int height)
 	buffer->info.bmiHeader.biSizeImage = 0;
 	buffer->info.bmiHeader.biClrUsed = 0;
 
-	int buffer_data_size = buffer->width*buffer->height * 4;
+	int buffer_data_size = buffer->width*buffer->height * bytes_per_pixel;
 	buffer->data = VirtualAlloc(NULL, buffer_data_size, MEM_COMMIT, PAGE_READWRITE);
 
 
