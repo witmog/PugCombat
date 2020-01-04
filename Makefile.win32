@@ -1,5 +1,5 @@
 CC=gcc
-CFLAGS=-I.
+CFLAGS=-I. -Wall
 LIBS=-luser32 -lGdi32 -lKernel32
 DEPS= game.h
 
