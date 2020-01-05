@@ -15,18 +15,14 @@ typedef struct
 static BitmapBuffer global_buffer;
 
 void
-platform_fill_rectangle(int x, int y, int width, int height, Color color)
+platform_set_pixel(int x, int y, Color color)
 {
-	for (int j = y; j < height+y; ++j)
+	if ((x < 0 || x > global_buffer.width) || 
+	    (y < 0 || y > global_buffer.height)) 
 	{
-		for (int i = x; i < width+x; ++i)
-		{
-			if ((i > 0 && i < global_buffer.width) && (j > 0 && j < global_buffer.height)) 
-			{
-				((int *)global_buffer.data)[global_buffer.width*j+i] = color;	
-			}
-		}
-	}	
+		return;
+	}
+	((int *)global_buffer.data)[global_buffer.width*y+x] = color;
 }
 
 static void

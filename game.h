@@ -6,7 +6,7 @@ typedef int Color;
 
 // OS to game:
 void
-platform_fill_rectangle(int x, int y, int width, int height, Color color);
+platform_set_pixel(int x, int y, Color color);
 
 // Game to OS:
 void
