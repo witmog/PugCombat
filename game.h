@@ -10,4 +10,7 @@ platform_set_pixel(int x, int y, Color color);
 
 // Game to OS:
 void
+game_init(void);
+
+void
 game_loop(void);

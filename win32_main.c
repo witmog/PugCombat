@@ -127,6 +127,7 @@ WinMain(HINSTANCE instance,
 	{
 		return 1;
 	}
+	game_init();
 	ShowWindow(window, show_cmd);
 
 	running = true;
