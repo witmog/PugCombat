@@ -1,14 +1,16 @@
 CC=gcc
-CFLAGS=-I. -Wall
+CFLAGS=-I. -Wall -g
 LIBS=-luser32 -lGdi32 -lKernel32
-DEPS= game.h
 
-%.o: %.c $(DEPS)
-	$(CC) -c -o $@ $< $(CFLAGS)
+program: win32_main.o game.o
+	$(CC) -o pugcombat win32_main.o game.o $(CFLAGS) $(LIBS)
 
-all: win32_main.o game.o
-	$(CC) -o PugCombat win32_main.o game.o $(CFLAGS) $(LIBS)
+win32_main.o: win32_main.c game.h
+	$(CC) -c win32_main.c $(CFLAGS)
+
+game.o: game.c game.h sprite.c
+	$(CC) -c game.c $(CFLAGS)
 
 clean:
-	DEL /Q *.o *.exe
+	rm -f *.exe *.o
 
