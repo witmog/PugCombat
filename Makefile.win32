@@ -2,14 +2,17 @@ CC=gcc
 CFLAGS=-I. -Wall -g
 LIBS=-luser32 -lGdi32 -lKernel32
 
-program: win32_main.o game.o
-	$(CC) -o pugcombat win32_main.o game.o $(CFLAGS) $(LIBS)
+program: win32_main.o game.o sprite.o
+	$(CC) -o pugcombat win32_main.o game.o sprite.o $(CFLAGS) $(LIBS)
 
 win32_main.o: win32_main.c game.h
 	$(CC) -c win32_main.c $(CFLAGS)
 
 game.o: game.c game.h sprite.c
 	$(CC) -c game.c $(CFLAGS)
+
+sprite.o: sprite.c sprite.h
+	$(CC) -c sprite.c $(CFLAGS)
 
 clean:
 	rm -f *.exe *.o

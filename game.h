@@ -1,6 +1,5 @@
 #pragma once
 
-
 typedef int Color;
 #define RGB32(r, g, b) ((Color)((r << 16) | (g << 8) | b))
 #define BYTES_PER_PIXEL 4
