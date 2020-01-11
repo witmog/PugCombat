@@ -2,6 +2,7 @@
 #include <stdbool.h>
 #include <Windows.h>
 static bool running;
+static Platform platform;
 
 typedef struct 
 {
@@ -44,7 +45,7 @@ win32_display_buffer(HDC device_context,
 }
 
 static void
-win32_resize_buffer(BitmapBuffer *buffer, int width, int height)
+win32_resize_buffer(BitmapBuffer *buffer, int unsigned width, int unsigned height)
 {
 	if (buffer->data)
 	{
@@ -84,11 +85,13 @@ win32_window_proc(HWND   window,
 		} break;
 		case WM_SIZE:
 		{
-			RECT client;
-			GetClientRect(window, &client);
-			int unsigned width = client.right - client.left;
-			int unsigned height = client.bottom - client.top;
-			win32_resize_buffer(&global_buffer, width, height);	
+			RECT client_rect;
+			GetClientRect(window, &client_rect);
+			platform.screen_width = client_rect.right;
+			platform.screen_height = client_rect.bottom;
+			win32_resize_buffer(&global_buffer, 
+					    platform.screen_width,
+					    platform.screen_height);	
 		} break;
 		default:
 		{
@@ -111,26 +114,25 @@ WinMain(HINSTANCE instance,
 	wc.lpfnWndProc = win32_window_proc;
 	wc.hInstance = instance;
 	wc.lpszClassName = "PugCombat";
-
 	RegisterClassEx(&wc);
 
-	DWORD style = WS_SIZEBOX | WS_CAPTION;
-	RECT dimensions = {0};
-	dimensions.right = 800;
-	dimensions.bottom = 600;
-	AdjustWindowRectEx(&dimensions, style, 0, 0);
+	platform.screen_width = 800;
+	platform.screen_height = 600;
 
-	int unsigned window_width = dimensions.right - dimensions.left;
-	int unsigned window_height = dimensions.bottom - dimensions.top;
-	
-	win32_resize_buffer(&global_buffer, dimensions.right, dimensions.bottom);
-	
+	RECT window_rect = {0};
+	window_rect.right = platform.screen_width;
+	window_rect.bottom = platform.screen_height;
+
+	DWORD style = WS_SIZEBOX | WS_CAPTION;
+	AdjustWindowRectEx(&window_rect, style, 0, 0);
+
 	HWND window = CreateWindowEx(0,
 				     wc.lpszClassName,
 				     "Pug Combat",
 				     style,
 				     0, 0,
-				     window_width, window_height,
+				     window_rect.right,
+				     window_rect.bottom,
 				     0, 0, 
 				     instance,
 				     0);
@@ -138,7 +140,8 @@ WinMain(HINSTANCE instance,
 	{
 		return 1;
 	}
-	game_init();
+	win32_resize_buffer(&global_buffer, platform.screen_width, platform.screen_height);
+	game_init(&platform);
 	ShowWindow(window, show_cmd);
 
 	running = true;
@@ -158,9 +161,10 @@ WinMain(HINSTANCE instance,
 		game_loop();
 
 		HDC device_context = GetDC(window);
-		RECT client_rect;
-		GetClientRect(window, &client_rect);
-		win32_display_buffer(device_context, &global_buffer, client_rect.right, client_rect.bottom);	
+		win32_display_buffer(device_context,
+				     &global_buffer,
+				     platform.screen_width, 
+				     platform.screen_height);	
 		ReleaseDC(window, device_context);
 	}
 	return 0;

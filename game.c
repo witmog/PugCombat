@@ -1,6 +1,7 @@
 #include <game.h>
 #include <sprite.h>
 
+static Platform *platform;
 static Sprite blue_square;
 
 static void
@@ -17,14 +18,15 @@ fill_rectangle(int x, int y, int width, int height, Color color)
 
 
 void
-game_init(void)
+game_init(Platform *platform_)
 {
+	platform = platform_;
 	blue_square = sprite_from_file("blue.sprite");
 }
 
 void
 game_loop(void)
 {
-	fill_rectangle(0, 0, 25, 200, RGB32(144, 23, 86));
+	fill_rectangle(0, 0, platform->screen_width, platform->screen_height, RGB32(144, 23, 86));
 	sprite_draw(0, 25, &blue_square);
 }
