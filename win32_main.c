@@ -18,8 +18,8 @@ static BitmapBuffer global_buffer;
 void
 platform_set_pixel(int x, int y, Color color)
 {
-	if ((x < 0 || x > global_buffer.width) || 
-	    (y < 0 || y > global_buffer.height)) 
+	if ((x < 0 || x >= global_buffer.width) || 
+	    (y < 0 || y >= global_buffer.height)) 
 	{
 		return;
 	}
