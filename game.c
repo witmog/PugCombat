@@ -27,6 +27,8 @@ game_init(Platform *platform_)
 void
 game_loop(void)
 {
-	fill_rectangle(0, 0, platform->screen_width, platform->screen_height, RGB32(144, 23, 86));
+		fill_rectangle(0, 0, platform->screen_width, platform->screen_height, RGB32(144, 23, 86));
 	sprite_draw(0, 25, &blue_square);
+	if (platform->right_mouse_down)
+	fill_rectangle(platform->mouse_x, platform->mouse_y, 32, 32, RGB32(255, 255, 0));
 }

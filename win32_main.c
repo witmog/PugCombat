@@ -1,6 +1,7 @@
 #include <game.h>
 #include <stdbool.h>
 #include <Windows.h>
+#include <windowsx.h>
 static bool running;
 static Platform platform;
 
@@ -93,6 +94,22 @@ win32_window_proc(HWND   window,
 					    platform.screen_width,
 					    platform.screen_height);	
 		} break;
+		case WM_LBUTTONDOWN:
+		{
+			platform.left_mouse_down = 1;
+		} break;
+		case WM_LBUTTONUP:
+		{
+			platform.left_mouse_down = 0;
+		} break;
+		case WM_RBUTTONDOWN:
+		{
+			platform.right_mouse_down = 1;
+		} break;
+		case WM_RBUTTONUP:
+		{
+			platform.right_mouse_down = 0;
+		} break;
 		default:
 		{
 			result = DefWindowProc(window, msg, wparam, lparam);
@@ -157,8 +174,17 @@ WinMain(HINSTANCE instance,
 			TranslateMessage(&msg);
 			DispatchMessage(&msg);
 		}
+		
+		{
+			POINT pt;
+			GetCursorPos(&pt);		
+			ScreenToClient(window, &pt);
+			platform.mouse_x = pt.x;
+			platform.mouse_y = pt.y;
+		}
 
 		game_loop();
+
 
 		HDC device_context = GetDC(window);
 		win32_display_buffer(device_context,

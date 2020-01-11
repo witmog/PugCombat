@@ -9,6 +9,10 @@ struct Platform
 {
 	int unsigned screen_width;
 	int unsigned screen_height;
+	int unsigned mouse_x;
+	int unsigned mouse_y;
+	char unsigned left_mouse_down;
+	char unsigned right_mouse_down;
 };
 
 // OS to game:
