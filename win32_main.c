@@ -84,8 +84,10 @@ win32_window_proc(HWND   window,
 		} break;
 		case WM_SIZE:
 		{
-			int width = LOWORD(lparam);
-			int height = HIWORD(lparam);
+			RECT client;
+			GetClientRect(window, &client);
+			int unsigned width = client.right - client.left;
+			int unsigned height = client.bottom - client.top;
 			win32_resize_buffer(&global_buffer, width, height);	
 		} break;
 		default:
@@ -111,17 +113,27 @@ WinMain(HINSTANCE instance,
 	wc.lpszClassName = "PugCombat";
 
 	RegisterClassEx(&wc);
-	win32_resize_buffer(&global_buffer, 800, 600);
+
+	DWORD style = WS_SIZEBOX | WS_CAPTION;
+	RECT dimensions = {0};
+	dimensions.right = 800;
+	dimensions.bottom = 600;
+	AdjustWindowRectEx(&dimensions, style, 0, 0);
+
+	int unsigned window_width = dimensions.right - dimensions.left;
+	int unsigned window_height = dimensions.bottom - dimensions.top;
 	
-	HWND window = CreateWindowEx(WS_EX_OVERLAPPEDWINDOW,
+	win32_resize_buffer(&global_buffer, dimensions.right, dimensions.bottom);
+	
+	HWND window = CreateWindowEx(0,
 				     wc.lpszClassName,
 				     "Pug Combat",
-				     WS_OVERLAPPEDWINDOW | WS_SIZEBOX,
+				     style,
 				     0, 0,
-				     800, 600,
-				     NULL, NULL, 
+				     window_width, window_height,
+				     0, 0, 
 				     instance,
-				     NULL);
+				     0);
 	if (!window)
 	{
 		return 1;
