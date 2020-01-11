@@ -1,8 +1,7 @@
 #include <game.h>
-#include <stdbool.h>
 #include <Windows.h>
 #include <windowsx.h>
-static bool running;
+
 static Platform platform;
 
 typedef struct 
@@ -82,7 +81,7 @@ win32_window_proc(HWND   window,
 	{
 		case WM_CLOSE:
 		{
-			running = false;
+			platform.running = 0;
 		} break;
 		case WM_SIZE:
 		{
@@ -161,15 +160,15 @@ WinMain(HINSTANCE instance,
 	game_init(&platform);
 	ShowWindow(window, show_cmd);
 
-	running = true;
-	while (running)
+	platform.running = 1;
+	while (platform.running)
 	{
 		MSG msg = {0};
 		while (PeekMessage(&msg, 0, 0, 0, PM_REMOVE))
 		{
 			if (msg.message == WM_QUIT)
 			{
-				running = false;
+				platform.running = 0;
 			}
 			TranslateMessage(&msg);
 			DispatchMessage(&msg);

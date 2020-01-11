@@ -13,6 +13,7 @@ struct Platform
 	int unsigned mouse_y;
 	char unsigned left_mouse_down;
 	char unsigned right_mouse_down;
+	char unsigned running;
 };
 
 // OS to game:
