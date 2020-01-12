@@ -1,15 +1,16 @@
 #include <game.h>
 #include <sprite.h>
+#include <common/language_sugar.h>
 
-static Platform *platform;
-static Sprite blue_square;
+global Platform *platform;
+global Sprite blue_square;
 
-static void
-fill_rectangle(int x, int y, int width, int height, Color color)
+internal void
+fill_rectangle(i32 x, i32 y, i32 width, i32 height, Color color)
 {
-	for (int j = y; j < height+y; ++j)
+	for (i32 j = y; j < height+y; ++j)
 	{
-		for (int i = x; i < width+x; ++i)
+		for (i32 i = x; i < width+x; ++i)
 		{
 			platform_set_pixel(i, j, color);	
 		}
@@ -27,8 +28,8 @@ game_init(Platform *platform_)
 void
 game_loop(void)
 {
-		fill_rectangle(0, 0, platform->screen_width, platform->screen_height, RGB32(144, 23, 86));
-	sprite_draw(0, 25, &blue_square);
+	fill_rectangle(0, 0, platform->screen_width, platform->screen_height, RGB32(144, 23, 86));
+	sprite_draw(platform->mouse_x, platform->mouse_y, &blue_square);
 	if (platform->right_mouse_down)
 	fill_rectangle(platform->mouse_x, platform->mouse_y, 32, 32, RGB32(255, 255, 0));
 }

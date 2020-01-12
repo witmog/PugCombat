@@ -2,34 +2,34 @@
 #include <Windows.h>
 #include <windowsx.h>
 
-static Platform platform;
+global Platform platform;
 
-typedef struct 
+typedef struct BitmapBuffer BitmapBuffer;
+struct BitmapBuffer 
 {
 	BITMAPINFO info;
 	void *data;
-	int width;
-	int height;
-	int stride;		
-} BitmapBuffer;
-
-static BitmapBuffer global_buffer;
+	i32 width;
+	i32 height;
+	u32 stride;		
+};
+global BitmapBuffer global_buffer;
 
 void
-platform_set_pixel(int x, int y, Color color)
+platform_set_pixel(i32 x, i32 y, Color color)
 {
 	if ((x < 0 || x >= global_buffer.width) || 
 	    (y < 0 || y >= global_buffer.height)) 
 	{
 		return;
 	}
-	((int *)global_buffer.data)[global_buffer.width*y+x] = color;
+	((i32 *)global_buffer.data)[global_buffer.width*y+x] = color;
 }
 
-static void
+internal void
 win32_display_buffer(HDC device_context,
 		     BitmapBuffer *buffer,
-		     int width, int height)
+		     u32 width, u32 height)
 {
 	StretchDIBits(device_context,
 		      // destination
@@ -44,8 +44,8 @@ win32_display_buffer(HDC device_context,
 		      SRCCOPY);
 }
 
-static void
-win32_resize_buffer(BitmapBuffer *buffer, int unsigned width, int unsigned height)
+internal void
+win32_resize_buffer(BitmapBuffer *buffer, u32 width, u32 height)
 {
 	if (buffer->data)
 	{
@@ -64,7 +64,7 @@ win32_resize_buffer(BitmapBuffer *buffer, int unsigned width, int unsigned heigh
 	buffer->info.bmiHeader.biSizeImage = 0;
 	buffer->info.bmiHeader.biClrUsed = 0;
 
-	int buffer_data_size = buffer->width*buffer->height * BYTES_PER_PIXEL;
+	u32 buffer_data_size = buffer->width*buffer->height * BYTES_PER_PIXEL;
 	buffer->data = VirtualAlloc(NULL, buffer_data_size, MEM_COMMIT, PAGE_READWRITE);
 
 
@@ -81,7 +81,7 @@ win32_window_proc(HWND   window,
 	{
 		case WM_CLOSE:
 		{
-			platform.running = 0;
+			platform.running = false;
 		} break;
 		case WM_SIZE:
 		{
@@ -95,19 +95,19 @@ win32_window_proc(HWND   window,
 		} break;
 		case WM_LBUTTONDOWN:
 		{
-			platform.left_mouse_down = 1;
+			platform.left_mouse_down = true;
 		} break;
 		case WM_LBUTTONUP:
 		{
-			platform.left_mouse_down = 0;
+			platform.left_mouse_down = false;
 		} break;
 		case WM_RBUTTONDOWN:
 		{
-			platform.right_mouse_down = 1;
+			platform.right_mouse_down = true;
 		} break;
 		case WM_RBUTTONUP:
 		{
-			platform.right_mouse_down = 0;
+			platform.right_mouse_down = false;
 		} break;
 		default:
 		{
@@ -118,11 +118,11 @@ win32_window_proc(HWND   window,
 }
 
 
-int WINAPI
+i32 WINAPI
 WinMain(HINSTANCE instance,
         HINSTANCE prev_instance,
         LPSTR     cmd_line,
-        int       show_cmd)
+        i32       show_cmd)
 {
 	WNDCLASSEX wc = {0};	
 	wc.cbSize = sizeof(WNDCLASSEX); 
@@ -160,7 +160,7 @@ WinMain(HINSTANCE instance,
 	game_init(&platform);
 	ShowWindow(window, show_cmd);
 
-	platform.running = 1;
+	platform.running = true;
 	while (platform.running)
 	{
 		MSG msg = {0};
@@ -168,7 +168,7 @@ WinMain(HINSTANCE instance,
 		{
 			if (msg.message == WM_QUIT)
 			{
-				platform.running = 0;
+				platform.running = false;
 			}
 			TranslateMessage(&msg);
 			DispatchMessage(&msg);

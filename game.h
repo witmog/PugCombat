@@ -1,24 +1,25 @@
 #pragma once
+#include <common/language_sugar.h>
 
-typedef int Color;
+typedef u32 Color;
 #define RGB32(r, g, b) ((Color)((r << 16) | (g << 8) | b))
 #define BYTES_PER_PIXEL 4
 
 typedef struct Platform Platform;
 struct Platform
 {
-	int unsigned screen_width;
-	int unsigned screen_height;
-	int unsigned mouse_x;
-	int unsigned mouse_y;
-	char unsigned left_mouse_down;
-	char unsigned right_mouse_down;
-	char unsigned running;
+	i32 screen_width;
+	i32 screen_height;
+	i32 mouse_x;
+	i32 mouse_y;
+	b8 left_mouse_down;
+	b8 right_mouse_down;
+	b8 running;
 };
 
 // OS to game:
 void
-platform_set_pixel(int x, int y, Color color);
+platform_set_pixel(i32 x, i32 y, Color color);
 
 // Game to OS:
 void
