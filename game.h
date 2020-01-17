@@ -2,7 +2,7 @@
 #include <common/language_sugar.h>
 
 typedef u32 Color;
-#define RGB32(r, g, b) ((Color)((r << 16) | (g << 8) | b))
+#define RGBA32(r, g, b, a) ((Color)((a << 24) | (r << 16) | (g << 8) | b))
 #define BYTES_PER_PIXEL 4
 
 typedef struct Platform Platform;

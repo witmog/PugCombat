@@ -14,6 +14,12 @@ void
 sprite_draw(i32 x, i32 y, Sprite *sprite);
 
 void
+fill_circle_in_sprite(i32 x, i32 y,
+		      Sprite *sprite,
+		      u32 radius,
+		      Color color);
+
+void
 sprite_to_disk(char *filepath, Sprite *sprite);
 
 Sprite

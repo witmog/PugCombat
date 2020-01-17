@@ -1,6 +1,7 @@
 #include <sprite.h>
 #include <stdlib.h>
 #include <stdio.h>
+#include <math.h>
 
 
 void
@@ -12,6 +13,28 @@ sprite_draw(i32 x, i32 y, Sprite *sprite)
 		{
 			platform_set_pixel(i+x, j+y, sprite->data[j*sprite->width + i]);	
 		}
+	}
+}
+
+void
+fill_circle_in_sprite(i32 x, i32 y,
+		      Sprite *sprite,
+		      u32 radius,
+		      Color color)
+{
+	for (i32 i = radius; i > 1; --i)
+	{
+		for (u32 angle = 0; angle < 360; ++angle)
+		{
+			i32 i = (i32)(x + radius * (sin(angle) * cos(angle)));
+			i32 j = (i32)(y + radius * (sin(angle) * sin(angle)));
+			if ((i >= 0 && i < sprite->width) && 
+			    (j >= 0 && j < sprite->height))
+			{
+				sprite->data[i + j * sprite->width] = color;
+			}
+		}
+		--radius;
 	}
 }
 

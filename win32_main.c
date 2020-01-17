@@ -18,12 +18,13 @@ global BitmapBuffer global_buffer;
 void
 platform_set_pixel(i32 x, i32 y, Color color)
 {
-	if ((x < 0 || x >= global_buffer.width) || 
-	    (y < 0 || y >= global_buffer.height)) 
+	if (((color & (0xFF << 24) >> 24) != 0) &&
+	    (x >= 0 && x < global_buffer.width) && 
+	    (y >= 0 && y < global_buffer.height))
 	{
-		return;
+		i32 *bitmap = (i32 *)global_buffer.data;
+		bitmap[global_buffer.width*y+x] = color;
 	}
-	((i32 *)global_buffer.data)[global_buffer.width*y+x] = color;
 }
 
 internal void
@@ -135,11 +136,11 @@ WinMain(HINSTANCE instance,
 	platform.screen_width = 800;
 	platform.screen_height = 600;
 
+	DWORD style = WS_SIZEBOX | WS_CAPTION;
 	RECT window_rect = {0};
 	window_rect.right = platform.screen_width;
 	window_rect.bottom = platform.screen_height;
 
-	DWORD style = WS_SIZEBOX | WS_CAPTION;
 	AdjustWindowRectEx(&window_rect, style, 0, 0);
 
 	HWND window = CreateWindowEx(0,
@@ -157,10 +158,10 @@ WinMain(HINSTANCE instance,
 		return 1;
 	}
 	win32_resize_buffer(&global_buffer, platform.screen_width, platform.screen_height);
-	game_init(&platform);
 	ShowWindow(window, show_cmd);
 
 	platform.running = true;
+	game_init(&platform);
 	while (platform.running)
 	{
 		MSG msg = {0};
@@ -174,6 +175,7 @@ WinMain(HINSTANCE instance,
 			DispatchMessage(&msg);
 		}
 		
+		// Note: update cursor
 		{
 			POINT pt;
 			GetCursorPos(&pt);		
