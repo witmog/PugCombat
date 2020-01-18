@@ -3,6 +3,7 @@
 
 typedef u32 Color;
 #define RGBA32(r, g, b, a) ((Color)((a << 24) | (r << 16) | (g << 8) | b))
+#define GET_ALPHA(color) ((color & (0xFF << 24)) >> 24)
 #define BYTES_PER_PIXEL 4
 
 typedef struct Platform Platform;

@@ -13,6 +13,9 @@ struct Sprite
 void
 sprite_draw(i32 x, i32 y, Sprite *sprite);
 
+b32
+sprite_collide_with_sprite(i32 x0, i32 y0, Sprite *sprite0,
+			     i32 x1, i32 y1, Sprite *sprite1);
 void
 fill_circle_in_sprite(i32 x, i32 y,
 		      Sprite *sprite,

@@ -16,6 +16,38 @@ sprite_draw(i32 x, i32 y, Sprite *sprite)
 	}
 }
 
+b32
+sprite_collide_with_sprite(i32 x0, i32 y0, Sprite *sprite0,
+			     i32 x1, i32 y1, Sprite *sprite1)
+{
+	i32 width0 = sprite0->width;
+	i32 height0 = sprite0->height;
+
+	i32 width1 = sprite1->width;
+	i32 height1 = sprite1->height;
+	for (u32 j = 0; j < height0; ++j)
+	{
+		for (u32 i = 0; i < width0; ++i)
+		{
+			if (GET_ALPHA(sprite0->data[width0*j + i]) == 0)
+			{
+				continue;
+			}
+			i32 screen_x0 = x0+i;
+			i32 screen_y0 = y0+i;
+			if ((screen_x0 >= x1) && (screen_x0 < x1+width1) &&
+			    (screen_y0 >= y1) && (screen_y0 < y1+height1))
+			{
+				if (GET_ALPHA(sprite1->data[width1*(screen_y0-y1) + (screen_x0-x1)])!= 0)
+				{
+					return true;
+				}
+			}
+		}
+	}
+	return false;
+}
+
 void
 fill_circle_in_sprite(i32 x, i32 y,
 		      Sprite *sprite,
