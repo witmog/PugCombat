@@ -1,10 +1,10 @@
-#include <game.h>
-#include <sprite.h>
-#include <common/language_sugar.h>
-#include <stdlib.h>
+#include "game.h"
+#include "sprite.h"
+#include "language_sugar.h"
+
+#include "sprite.c"
 
 global Platform *platform;
-global Sprite blue_square;
 Sprite terrain;
 i32 terrain_x = 0;
 i32 terrain_y = 300;
@@ -62,7 +62,6 @@ void
 game_init(Platform *platform_)
 {
 	platform = platform_;
-	blue_square = sprite_from_file("blue.sprite");
 
 	// Todo: load terrain from disk
 	{

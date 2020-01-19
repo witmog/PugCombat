@@ -1,5 +1,5 @@
 #pragma once
-#include <common/language_sugar.h>
+#include "language_sugar.h"
 
 typedef u32 Color;
 #define RGBA32(r, g, b, a) ((Color)((a << 24) | (r << 16) | (g << 8) | b))

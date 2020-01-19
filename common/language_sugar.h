@@ -1,4 +1,8 @@
 #include <stdint.h>
+#include <stdlib.h>
+#include <stdio.h>
+#include <math.h>
+#include <string.h>
 
 typedef int64_t i64;
 typedef int32_t i32;

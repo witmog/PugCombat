@@ -1,6 +1,6 @@
 #pragma once
-#include <game.h>
-#include <common/language_sugar.h>
+#include "game.h"
+#include "language_sugar.h"
 
 typedef struct Sprite Sprite;
 struct Sprite

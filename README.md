@@ -4,5 +4,5 @@ The game, in its current stage, can only be compiled for Windows. I plan on addi
 
 Make options:
 ```
-make win
+make windows
 ```

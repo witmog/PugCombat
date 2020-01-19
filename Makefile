@@ -1,9 +1,12 @@
-all: win
+CC=gcc
+CFLAGS=-Icommon -Igame/source -Wall -g
+EXEC=PugCombat
 
-win:
-	+$(MAKE) -f Makefile.win32
+all: windows
 
-
+windows: game/source/win32_main.c 
+	@$(CC) -o $(EXEC) game/source/win32_main.c $(CFLAGS) -luser32 -lGdi32 -lKernel32
 .PHONY: clean
 clean:
-	+$(MAKE) clean -f Makefile.win32
+	rm *.exe
+	

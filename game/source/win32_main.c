@@ -1,8 +1,10 @@
-#include <game.h>
 #include <Windows.h>
 #include <windowsx.h>
+#include "game.h"
 
-global Platform platform;
+#include "game.c"
+
+global Platform global_platform;
 
 typedef struct BitmapBuffer BitmapBuffer;
 struct BitmapBuffer 
@@ -82,33 +84,33 @@ win32_window_proc(HWND   window,
 	{
 		case WM_CLOSE:
 		{
-			platform.running = false;
+			global_platform.running = false;
 		} break;
 		case WM_SIZE:
 		{
 			RECT client_rect;
 			GetClientRect(window, &client_rect);
-			platform.screen_width = client_rect.right;
-			platform.screen_height = client_rect.bottom;
+			global_platform.screen_width = client_rect.right;
+			global_platform.screen_height = client_rect.bottom;
 			win32_resize_buffer(&global_buffer, 
-					    platform.screen_width,
-					    platform.screen_height);	
+					    global_platform.screen_width,
+					    global_platform.screen_height);	
 		} break;
 		case WM_LBUTTONDOWN:
 		{
-			platform.left_mouse_down = true;
+			global_platform.left_mouse_down = true;
 		} break;
 		case WM_LBUTTONUP:
 		{
-			platform.left_mouse_down = false;
+			global_platform.left_mouse_down = false;
 		} break;
 		case WM_RBUTTONDOWN:
 		{
-			platform.right_mouse_down = true;
+			global_platform.right_mouse_down = true;
 		} break;
 		case WM_RBUTTONUP:
 		{
-			platform.right_mouse_down = false;
+			global_platform.right_mouse_down = false;
 		} break;
 		default:
 		{
@@ -133,13 +135,13 @@ WinMain(HINSTANCE instance,
 	wc.lpszClassName = "PugCombat";
 	RegisterClassEx(&wc);
 
-	platform.screen_width = 800;
-	platform.screen_height = 600;
+	global_platform.screen_width = 800;
+	global_platform.screen_height = 600;
 
 	DWORD style = WS_SIZEBOX | WS_CAPTION;
 	RECT window_rect = {0};
-	window_rect.right = platform.screen_width;
-	window_rect.bottom = platform.screen_height;
+	window_rect.right = global_platform.screen_width;
+	window_rect.bottom = global_platform.screen_height;
 
 	AdjustWindowRectEx(&window_rect, style, 0, 0);
 
@@ -157,19 +159,19 @@ WinMain(HINSTANCE instance,
 	{
 		return 1;
 	}
-	win32_resize_buffer(&global_buffer, platform.screen_width, platform.screen_height);
+	win32_resize_buffer(&global_buffer, global_platform.screen_width, global_platform.screen_height);
 	ShowWindow(window, show_cmd);
 
-	platform.running = true;
-	game_init(&platform);
-	while (platform.running)
+	global_platform.running = true;
+	game_init(&global_platform);
+	while (global_platform.running)
 	{
 		MSG msg = {0};
 		while (PeekMessage(&msg, 0, 0, 0, PM_REMOVE))
 		{
 			if (msg.message == WM_QUIT)
 			{
-				platform.running = false;
+				global_platform.running = false;
 			}
 			TranslateMessage(&msg);
 			DispatchMessage(&msg);
@@ -180,8 +182,8 @@ WinMain(HINSTANCE instance,
 			POINT pt;
 			GetCursorPos(&pt);		
 			ScreenToClient(window, &pt);
-			platform.mouse_x = pt.x;
-			platform.mouse_y = pt.y;
+			global_platform.mouse_x = pt.x;
+			global_platform.mouse_y = pt.y;
 		}
 
 		game_loop();
@@ -190,8 +192,8 @@ WinMain(HINSTANCE instance,
 		HDC device_context = GetDC(window);
 		win32_display_buffer(device_context,
 				     &global_buffer,
-				     platform.screen_width, 
-				     platform.screen_height);	
+				     global_platform.screen_width, 
+				     global_platform.screen_height);	
 		ReleaseDC(window, device_context);
 	}
 	return 0;
