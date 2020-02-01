@@ -27,3 +27,6 @@ typedef double  f64;
 #define global   static
 #define internal static
 #define persist  static
+
+#define signum(x) ((x > 0) ? 1 : ((x < 0) ? -1 : 0))
+#define clamp(val, min, max) ((val > max) ? max : ((val < min) ? min : val))
