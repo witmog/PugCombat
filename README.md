@@ -1,8 +1,11 @@
-This is a work in progress of a Worms-like game.
+This is a work-in-progress pixel game.
+Note that in its current stage, the game has no gameplay mechanics.
 
-The game, in its current stage, can only be compiled for Windows. I plan on adding support for Linux once the game is complete.
+The game can be compiled for Windows and Linux.
 
-Make options:
+Example Make options:
 ```
+make linux
 make windows
 ```
+

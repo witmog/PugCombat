@@ -1,30 +1,28 @@
 #pragma once
 #include "language_sugar.h"
 
-typedef u32 Color;
-#define RGBA32(r, g, b, a) ((Color)((a << 24) | (r << 16) | (g << 8) | b))
+typedef uint32_t color_t;
 #define GET_ALPHA(color) ((color & (0xFF << 24)) >> 24)
 #define BYTES_PER_PIXEL 4
 
-typedef struct Platform Platform;
 struct Platform
 {
-	i32 screen_width;
-	i32 screen_height;
-	i32 mouse_x;
-	i32 mouse_y;
-	b8 left_mouse_down;
-	b8 right_mouse_down;
-	b8 running;
+	int game_width;
+	int game_height;
+	int mouse_x;
+	int mouse_y;
+	bool left_mouse_down;
+	bool right_mouse_down;
+	bool running;
 };
 
 // OS to game:
 void
-platform_set_pixel(i32 x, i32 y, Color color);
+Platform_SetPixel(int x, int y, color_t color);
 
 // Game to OS:
 void
-game_init(Platform *platform);
+InitGame(struct Platform *platform);
 
 void
-game_loop(void);
+UpdateGame(void);
