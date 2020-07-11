@@ -172,7 +172,7 @@ WinMain(HINSTANCE instance,
 				 0);
     if (!window)
     {
-	LOG_FATAL("Failed to create window");
+	log_fatal("Failed to create window");
 	return 1;
     }
     game_area = Win32_ResizeBuffer(&pixel_buffer, window_rect.right, window_rect.bottom);
